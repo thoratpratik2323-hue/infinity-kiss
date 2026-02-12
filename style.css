@@ -139,7 +139,15 @@ h1 {
     color: #d00000;
 }
 
-.auto-kiss-btn {
+.button-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.auto-kiss-btn,
+.music-btn {
     background: var(--primary-color);
     color: white;
     border: none;
@@ -152,19 +160,26 @@ h1 {
     box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
 }
 
-.auto-kiss-btn:hover {
+.auto-kiss-btn:hover,
+.music-btn:hover {
     background: #ff0a54;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
 }
 
-.auto-kiss-btn:active {
+.auto-kiss-btn:active,
+.music-btn:active {
     transform: translateY(0);
 }
 
 .auto-kiss-active {
     background: #ff0a54;
     animation: bounce 0.5s infinite alternate;
+}
+
+.music-playing {
+    background: #ff0a54;
+    animation: pulse-music 1s infinite alternate;
 }
 
 @keyframes bounce {
@@ -174,6 +189,16 @@ h1 {
 
     to {
         transform: translateY(-3px);
+    }
+}
+
+@keyframes pulse-music {
+    from {
+        box-shadow: 0 0 10px var(--primary-color);
+    }
+
+    to {
+        box-shadow: 0 0 20px var(--primary-color);
     }
 }
 
@@ -196,4 +221,9 @@ h1 {
         opacity: 0;
         transform: translate(var(--tx), -200px) scale(1.5) rotate(var(--rot));
     }
+}
+
+#player {
+    display: none;
+    /* Hide the YouTube player */
 }

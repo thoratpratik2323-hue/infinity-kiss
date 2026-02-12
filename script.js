@@ -2,12 +2,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const kissZone = document.getElementById('kissZone');
     const countDisplay = document.getElementById('kissCount');
     const autoKissBtn = document.getElementById('autoKissBtn');
+    const musicBtn = document.getElementById('musicBtn');
     const container = document.getElementById('particles-container');
 
     let count = 0;
     let autoInterval = null;
     const items = ['💋', '❤️', '💖', '💗', '💓', '🥰', '😍'];
 
+    // --- YouTube API Setup ---
+    let player;
+    let isMusicPlaying = false;
+
+    // Load YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    window.onYouTubeIframeAPIReady = function () {
+        player = new YT.Player('player', {
+            height: '0',
+            width: '0',
+            videoId: 'gvyUuxdRdR4', // Raataan Lambiyan
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': 'gvyUuxdRdR4'
+            },
+            events: {
+                'onReady': onPlayerReady
+            }
+        });
+    };
+
+    function onPlayerReady(event) {
+        musicBtn.addEventListener('click', toggleMusic);
+    }
+
+    function toggleMusic() {
+        if (isMusicPlaying) {
+            player.pauseVideo();
+            musicBtn.innerHTML = '<i class="fas fa-music"></i> Play Music';
+            musicBtn.classList.remove('music-playing');
+            isMusicPlaying = false;
+        } else {
+            player.playVideo();
+            musicBtn.innerHTML = '<i class="fas fa-pause"></i> Pause Music';
+            musicBtn.classList.add('music-playing');
+            isMusicPlaying = true;
+        }
+    }
+
+    // --- Particle Logic ---
     function createParticle(x, y) {
         const particle = document.createElement('div');
         particle.classList.add('floating-item');
@@ -37,6 +84,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Trigger vibration on mobile if supported
         if (navigator.vibrate) {
             navigator.vibrate(50);
+        }
+
+        // Auto-play music on first kiss interaction if not playing
+        if (!isMusicPlaying && player && player.getPlayerState) {
+            // Intentionally left blank or simple console log to avoid forced interaction issues,
+            // but user requested "romance", so maybe prompt? No, let's leave it manual for better UX.
+            // Or we can try to play it once if the browser allows.
         }
 
         // Get center of kiss zone for auto kisses
